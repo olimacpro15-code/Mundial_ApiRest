@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Jugadores')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('jugadores')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Jugadores</h1>
+    <p class="fs-5 mb-0">Plantilla de cada club. No hay jugador sin club.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link active" th:href="@{/jugadores}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/jugadores/nuevo}">Nuevo jugador</a></li>
+  </ul>
+  <div class="panel p-0 table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr><th>Nombre</th><th>Posición</th><th>Dorsal</th><th>Edad</th><th>Nacionalidad</th><th>Club</th><th>Acciones registradas</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="fila : ${jugadores}">
+          <td class="fw-semibold" th:text="${fila.nombre}"></td>
+          <td th:text="${fila.posicion}"></td>
+          <td th:text="${fila.dorsal}"></td>
+          <td th:text="${fila.edad}"></td>
+          <td th:text="${fila.nacionalidad}"></td>
+          <td th:text="${fila.club != null ? fila.club.nombre : '—'}"></td>
+          <td><span class="badge badge-team" th:text="${totalAcciones.get(fila.id) ?: 0}"></span></td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/jugadores/editar/{id}(id=${fila.id})}"><i class="bi bi-pencil"></i> Editar</a>
+            <form class="d-inline" th:action="@{/jugadores/eliminar/{id}(id=${fila.id})}" method="post" onsubmit="return confirm('¿Eliminar este registro?')">
+              <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i> Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(jugadores)}">
+          <td colspan="8" class="text-center text-secondary py-4">Aún no hay registros. <a th:href="@{/jugadores/nuevo}">Crea el primero</a>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

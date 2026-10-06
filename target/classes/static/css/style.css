@@ -1,0 +1,50 @@
+
+:root {
+  --turf: #0b3d2e;
+  --turf-2: #0f4d3a;
+  --chalk: #f4f6f1;
+  --ink: #14241d;
+  --gold: #f2b705;
+  --line: #d7ded6;
+}
+body { font-family: 'Barlow', system-ui, sans-serif; background: var(--chalk); color: var(--ink); }
+h1, h2, h3, .h4, .navbar-brand { font-family: 'Barlow Condensed', 'Barlow', sans-serif; font-weight: 700; }
+
+.navbar { background: var(--turf); }
+.navbar-brand { font-size: 1.7rem; color: var(--gold) !important; }
+.navbar .nav-link { color: #dcebe3; font-weight: 500; padding: 1rem .8rem; }
+.navbar .nav-link:hover, .navbar .nav-link.active { color: #fff; box-shadow: inset 0 -3px 0 var(--gold); }
+
+/* Franjas de césped cortado + círculo central */
+.pitch {
+  position: relative; overflow: hidden; color: #fff;
+  background: repeating-linear-gradient(90deg, var(--turf) 0 64px, var(--turf-2) 64px 128px);
+}
+.pitch::after {
+  content: ""; position: absolute; right: -90px; top: 50%; width: 280px; height: 280px; margin-top: -140px;
+  border: 4px solid rgba(255, 255, 255, .35); border-radius: 50%;
+}
+.pitch .container { position: relative; z-index: 1; }
+.pitch h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1; }
+.pitch p { max-width: 58ch; color: #cfe3d8; }
+@media (max-width: 768px) { .pitch::after { display: none; } }
+
+.panel { background: #fff; border: 1px solid var(--line); border-radius: .5rem; padding: 1.75rem; }
+.panel h2 { font-size: 1.8rem; border-left: 6px solid var(--gold); padding-left: .75rem; }
+.panel.p-0 { padding: 0; }
+
+.seccion { background: #fff; border: 1px solid var(--line); border-radius: .5rem; padding: 1.25rem; height: 100%; transition: transform .15s, border-color .15s; }
+.seccion:hover { transform: translateY(-3px); border-color: var(--turf); }
+.seccion .bi { font-size: 1.8rem; color: var(--turf); }
+.seccion .conteo { font-family: 'Barlow Condensed', sans-serif; font-size: 2.8rem; font-weight: 700; line-height: 1; color: var(--turf); }
+@media (prefers-reduced-motion: reduce) { .seccion { transition: none; } }
+
+.btn-turf { background: var(--turf); color: #fff; font-weight: 600; border: 0; }
+.btn-turf:hover, .btn-turf:focus { background: var(--turf-2); color: #fff; }
+.form-control:focus, .form-select:focus { border-color: var(--turf); box-shadow: 0 0 0 .2rem rgba(15, 77, 58, .2); }
+.form-check-input:checked { background-color: var(--turf); border-color: var(--turf); }
+
+.nav-pills .nav-link { color: var(--turf); font-weight: 600; }
+.nav-pills .nav-link.active { background: var(--turf); color: #fff; }
+.table thead th { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; border-bottom: 2px solid var(--turf); white-space: nowrap; }
+.badge-team { background: #e7efe9; color: var(--turf); font-weight: 500; }

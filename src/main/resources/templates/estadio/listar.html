@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Estadios')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('estadios')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Estadios</h1>
+    <p class="fs-5 mb-0">Escenarios donde juega cada club. Un estadio pertenece a un solo club.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link active" th:href="@{/estadios}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/estadios/nuevo}">Nuevo estadio</a></li>
+  </ul>
+  <div class="panel p-0 table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr><th>Nombre</th><th>Ciudad</th><th>Capacidad</th><th>Año de inauguración</th><th>Club asignado</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="fila : ${estadios}">
+          <td class="fw-semibold" th:text="${fila.nombre}"></td>
+          <td th:text="${fila.ciudad}"></td>
+          <td th:text="${fila.capacidad}"></td>
+          <td th:text="${fila.anioInauguracion}"></td>
+          <td th:text="${clubAsignado.get(fila.id) ?: 'Libre'}"></td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/estadios/editar/{id}(id=${fila.id})}"><i class="bi bi-pencil"></i> Editar</a>
+            <form class="d-inline" th:action="@{/estadios/eliminar/{id}(id=${fila.id})}" method="post" onsubmit="return confirm('¿Eliminar este registro?')">
+              <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i> Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(estadios)}">
+          <td colspan="6" class="text-center text-secondary py-4">Aún no hay registros. <a th:href="@{/estadios/nuevo}">Crea el primero</a>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Competiciones')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('competiciones')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Competiciones</h1>
+    <p class="fs-5 mb-0">Torneos organizados por una asociación en los que juegan varios clubes.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/competiciones}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link active" th:href="@{/competiciones/nuevo}">Nueva competición</a></li>
+  </ul>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(asociaciones)}">
+    No hay asociaciones registradas. <a class="alert-link" th:href="@{/asociaciones/nuevo}">Registrar asociación</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(clubes)}">
+    No hay clubes registrados. <a class="alert-link" th:href="@{/clubes/nuevo}">Registrar club</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <section class="panel">
+    <h2 class="mb-4" th:text="${#strings.isEmpty(competicion.id)} ? 'Nueva competición' : 'Editar competición'">Nueva competición</h2>
+    <form th:action="@{/competiciones/guardar}" th:object="${competicion}" method="post" class="row g-3">
+      <input type="hidden" th:field="*{id}">
+      <div class="col-md-6">
+        <label class="form-label" for="nombre">Nombre *</label>
+        <input type="text" class="form-control" th:field="*{nombre}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="anio">Año *</label>
+        <input type="number" class="form-control" th:field="*{anio}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="sede">Sede *</label>
+        <input type="text" class="form-control" th:field="*{sede}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="organizadorId">Asociación organizadora *</label>
+        <select class="form-select" id="organizadorId" name="organizadorId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${asociaciones}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${competicion.organizador != null and competicion.organizador.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label d-block">Clubes participantes *</label>
+        <div class="form-check form-check-inline" th:each="op : ${clubes}">
+          <input class="form-check-input" type="checkbox" name="clubesIds" th:id="'clubes-' + ${op.id}" th:value="${op.id}" th:checked="${clubesIds.contains(op.id)}">
+          <label class="form-check-label" th:for="'clubes-' + ${op.id}" th:text="${op.nombre}">Opción</label>
+        </div>
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-turf" type="submit" th:disabled="${#lists.isEmpty(asociaciones) or #lists.isEmpty(clubes)}"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a class="btn btn-outline-secondary" th:href="@{/competiciones}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Acciones')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('acciones')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Acciones</h1>
+    <p class="fs-5 mb-0">Eventos de juego: goles, asistencias, tarjetas y más.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link active" th:href="@{/acciones}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/acciones/nuevo}">Nueva acción</a></li>
+  </ul>
+  <div class="panel p-0 table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr><th>Tipo</th><th>Minuto</th><th>Descripción</th><th>Jugador</th><th>Competición</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="fila : ${acciones}">
+          <td class="fw-semibold" th:text="${fila.tipo}"></td>
+          <td th:text="${fila.minuto}"></td>
+          <td th:text="${fila.descripcion}"></td>
+          <td th:text="${fila.jugador != null ? fila.jugador.nombre : '—'}"></td>
+          <td th:text="${fila.competicion != null ? fila.competicion.nombre : '—'}"></td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/acciones/editar/{id}(id=${fila.id})}"><i class="bi bi-pencil"></i> Editar</a>
+            <form class="d-inline" th:action="@{/acciones/eliminar/{id}(id=${fila.id})}" method="post" onsubmit="return confirm('¿Eliminar este registro?')">
+              <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i> Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(acciones)}">
+          <td colspan="6" class="text-center text-secondary py-4">Aún no hay registros. <a th:href="@{/acciones/nuevo}">Crea el primero</a>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

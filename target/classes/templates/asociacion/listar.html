@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Asociaciones')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('asociaciones')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Asociaciones</h1>
+    <p class="fs-5 mb-0">Federaciones que agrupan clubes y organizan competiciones.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link active" th:href="@{/asociaciones}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/asociaciones/nuevo}">Nueva asociación</a></li>
+  </ul>
+  <div class="panel p-0 table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr><th>Nombre</th><th>País</th><th>Confederación</th><th>Año de fundación</th><th>Presidente</th><th>Clubes</th><th>Competiciones organizadas</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="fila : ${asociaciones}">
+          <td class="fw-semibold" th:text="${fila.nombre}"></td>
+          <td th:text="${fila.pais}"></td>
+          <td th:text="${fila.confederacion}"></td>
+          <td th:text="${fila.anioFundacion}"></td>
+          <td th:text="${fila.presidente}"></td>
+          <td><span class="badge badge-team" th:text="${totalClubes.get(fila.id) ?: 0}"></span></td>
+          <td><span class="badge badge-team" th:text="${totalCompeticiones.get(fila.id) ?: 0}"></span></td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/asociaciones/editar/{id}(id=${fila.id})}"><i class="bi bi-pencil"></i> Editar</a>
+            <form class="d-inline" th:action="@{/asociaciones/eliminar/{id}(id=${fila.id})}" method="post" onsubmit="return confirm('¿Eliminar este registro?')">
+              <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i> Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(asociaciones)}">
+          <td colspan="8" class="text-center text-secondary py-4">Aún no hay registros. <a th:href="@{/asociaciones/nuevo}">Crea el primero</a>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

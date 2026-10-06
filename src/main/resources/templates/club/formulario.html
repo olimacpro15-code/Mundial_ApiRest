@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Clubes')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('clubes')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Clubes</h1>
+    <p class="fs-5 mb-0">Equipos con su asociación, su estadio y su entrenador.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/clubes}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link active" th:href="@{/clubes/nuevo}">Nuevo club</a></li>
+  </ul>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(asociaciones)}">
+    No hay asociaciones registradas. <a class="alert-link" th:href="@{/asociaciones/nuevo}">Registrar asociación</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(estadios)}">
+    No hay estadios libres. <a class="alert-link" th:href="@{/estadios/nuevo}">Registrar estadio</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(entrenadores)}">
+    No hay entrenadores libres. <a class="alert-link" th:href="@{/entrenadores/nuevo}">Registrar entrenador</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <section class="panel">
+    <h2 class="mb-4" th:text="${#strings.isEmpty(club.id)} ? 'Nuevo club' : 'Editar club'">Nuevo club</h2>
+    <form th:action="@{/clubes/guardar}" th:object="${club}" method="post" class="row g-3">
+      <input type="hidden" th:field="*{id}">
+      <div class="col-md-6">
+        <label class="form-label" for="nombre">Nombre *</label>
+        <input type="text" class="form-control" th:field="*{nombre}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="ciudad">Ciudad *</label>
+        <input type="text" class="form-control" th:field="*{ciudad}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="anioFundacion">Año de fundación</label>
+        <input type="number" class="form-control" th:field="*{anioFundacion}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="asociacionId">Asociación *</label>
+        <select class="form-select" id="asociacionId" name="asociacionId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${asociaciones}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${club.asociacion != null and club.asociacion.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="estadioId">Estadio *</label>
+        <select class="form-select" id="estadioId" name="estadioId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${estadios}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${club.estadio != null and club.estadio.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="entrenadorId">Entrenador *</label>
+        <select class="form-select" id="entrenadorId" name="entrenadorId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${entrenadores}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${club.entrenador != null and club.entrenador.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-turf" type="submit" th:disabled="${#lists.isEmpty(asociaciones) or #lists.isEmpty(estadios) or #lists.isEmpty(entrenadores)}"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a class="btn btn-outline-secondary" th:href="@{/clubes}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

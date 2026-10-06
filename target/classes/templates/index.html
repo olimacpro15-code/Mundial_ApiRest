@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Inicio')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('inicio')}"></nav>
+
+<header class="pitch py-5">
+  <div class="container py-lg-4">
+    <h1 class="mb-3">Gestiona el Mundial</h1>
+    <p class="fs-5 mb-0">Asociaciones, estadios, entrenadores, clubes, jugadores, competiciones y acciones, cada uno en su propia sección y conectados entre sí.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <div class="row g-4">
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-flag"></i>
+            <span class="conteo" th:text="${totalAsociaciones}">0</span>
+          </div>
+          <h3 class="h4">Asociaciones</h3>
+          <p class="text-secondary flex-grow-1">Federaciones que agrupan clubes y organizan competiciones.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/asociaciones}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/asociaciones/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-buildings"></i>
+            <span class="conteo" th:text="${totalEstadios}">0</span>
+          </div>
+          <h3 class="h4">Estadios</h3>
+          <p class="text-secondary flex-grow-1">Escenarios donde juega cada club. Un estadio pertenece a un solo club.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/estadios}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/estadios/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-person-badge"></i>
+            <span class="conteo" th:text="${totalEntrenadores}">0</span>
+          </div>
+          <h3 class="h4">Entrenadores</h3>
+          <p class="text-secondary flex-grow-1">Directores técnicos. Un entrenador dirige a un solo club.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/entrenadores}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/entrenadores/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-shield-shaded"></i>
+            <span class="conteo" th:text="${totalClubes}">0</span>
+          </div>
+          <h3 class="h4">Clubes</h3>
+          <p class="text-secondary flex-grow-1">Equipos con su asociación, su estadio y su entrenador.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/clubes}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/clubes/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-people"></i>
+            <span class="conteo" th:text="${totalJugadores}">0</span>
+          </div>
+          <h3 class="h4">Jugadores</h3>
+          <p class="text-secondary flex-grow-1">Plantilla de cada club. No hay jugador sin club.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/jugadores}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/jugadores/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-trophy"></i>
+            <span class="conteo" th:text="${totalCompeticiones}">0</span>
+          </div>
+          <h3 class="h4">Competiciones</h3>
+          <p class="text-secondary flex-grow-1">Torneos organizados por una asociación en los que juegan varios clubes.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/competiciones}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/competiciones/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+        <div class="seccion d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <i class="bi bi-lightning-charge"></i>
+            <span class="conteo" th:text="${totalAcciones}">0</span>
+          </div>
+          <h3 class="h4">Acciones</h3>
+          <p class="text-secondary flex-grow-1">Eventos de juego: goles, asistencias, tarjetas y más.</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-turf" th:href="@{/acciones}">Listado</a>
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/acciones/nuevo}">Nuevo</a>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="row g-4 mt-2">
+    <div class="col-lg-5">
+      <section class="panel h-100">
+        <h2 class="mb-3">Orden de registro</h2>
+        <p class="text-secondary">Un registro no se guarda si el que necesita todavía no existe.</p>
+        <ol class="mb-0">
+          <li><strong>Asociación</strong>, <strong>Estadio</strong> y <strong>Entrenador</strong>: no dependen de nadie.</li>
+          <li><strong>Club</strong>: necesita una asociación, un estadio libre y un entrenador libre.</li>
+          <li><strong>Jugador</strong>: necesita un club.</li>
+          <li><strong>Competición</strong>: necesita una asociación y al menos un club.</li>
+          <li><strong>Acción</strong>: necesita un jugador y una competición.</li>
+        </ol>
+      </section>
+    </div>
+    <div class="col-lg-7">
+      <section class="panel h-100">
+        <h2 class="mb-3">Relaciones</h2>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead><tr><th>Tipo</th><th>Entidades</th><th>Regla</th></tr></thead>
+            <tbody>
+              <tr><td>Uno a uno</td><td>Club y Estadio; Club y Entrenador</td><td>Cada estadio y cada entrenador pertenece a un solo club.</td></tr>
+              <tr><td>Muchos a uno</td><td>Club → Asociación; Jugador → Club; Competición → Asociación; Acción → Jugador y Competición</td><td>El registro hijo no se guarda sin su padre.</td></tr>
+              <tr><td>Uno a muchos</td><td>Asociación → Clubes; Club → Jugadores; Jugador → Acciones</td><td>No se elimina un padre que todavía tiene hijos.</td></tr>
+              <tr><td>Muchos a muchos</td><td>Competición y Club</td><td>Una competición necesita al menos un club.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

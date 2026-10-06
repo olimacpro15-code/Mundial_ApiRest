@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Estadios')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('estadios')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Estadios</h1>
+    <p class="fs-5 mb-0">Escenarios donde juega cada club. Un estadio pertenece a un solo club.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/estadios}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link active" th:href="@{/estadios/nuevo}">Nuevo estadio</a></li>
+  </ul>
+  <section class="panel">
+    <h2 class="mb-4" th:text="${#strings.isEmpty(estadio.id)} ? 'Nuevo estadio' : 'Editar estadio'">Nuevo estadio</h2>
+    <form th:action="@{/estadios/guardar}" th:object="${estadio}" method="post" class="row g-3">
+      <input type="hidden" th:field="*{id}">
+      <div class="col-md-6">
+        <label class="form-label" for="nombre">Nombre *</label>
+        <input type="text" class="form-control" th:field="*{nombre}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="ciudad">Ciudad *</label>
+        <input type="text" class="form-control" th:field="*{ciudad}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="capacidad">Capacidad *</label>
+        <input type="number" class="form-control" th:field="*{capacidad}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="anioInauguracion">Año de inauguración</label>
+        <input type="number" class="form-control" th:field="*{anioInauguracion}">
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-turf" type="submit"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a class="btn btn-outline-secondary" th:href="@{/estadios}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

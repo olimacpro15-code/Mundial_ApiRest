@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Jugadores')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('jugadores')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Jugadores</h1>
+    <p class="fs-5 mb-0">Plantilla de cada club. No hay jugador sin club.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/jugadores}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link active" th:href="@{/jugadores/nuevo}">Nuevo jugador</a></li>
+  </ul>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(clubes)}">
+    No hay clubes registrados. <a class="alert-link" th:href="@{/clubes/nuevo}">Registrar club</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <section class="panel">
+    <h2 class="mb-4" th:text="${#strings.isEmpty(jugador.id)} ? 'Nuevo jugador' : 'Editar jugador'">Nuevo jugador</h2>
+    <form th:action="@{/jugadores/guardar}" th:object="${jugador}" method="post" class="row g-3">
+      <input type="hidden" th:field="*{id}">
+      <div class="col-md-6">
+        <label class="form-label" for="nombre">Nombre *</label>
+        <input type="text" class="form-control" th:field="*{nombre}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="posicion">Posición *</label>
+        <select class="form-select" th:field="*{posicion}" required><option value="">Selecciona una opción</option><option value="Portero">Portero</option><option value="Defensa">Defensa</option><option value="Mediocampista">Mediocampista</option><option value="Delantero">Delantero</option></select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="dorsal">Dorsal *</label>
+        <input type="number" class="form-control" th:field="*{dorsal}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="edad">Edad</label>
+        <input type="number" class="form-control" th:field="*{edad}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="nacionalidad">Nacionalidad</label>
+        <input type="text" class="form-control" th:field="*{nacionalidad}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="clubId">Club *</label>
+        <select class="form-select" id="clubId" name="clubId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${clubes}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${jugador.club != null and jugador.club.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-turf" type="submit" th:disabled="${#lists.isEmpty(clubes)}"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a class="btn btn-outline-secondary" th:href="@{/jugadores}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

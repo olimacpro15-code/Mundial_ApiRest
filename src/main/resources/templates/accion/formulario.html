@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Acciones')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('acciones')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Acciones</h1>
+    <p class="fs-5 mb-0">Eventos de juego: goles, asistencias, tarjetas y más.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/acciones}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link active" th:href="@{/acciones/nuevo}">Nueva acción</a></li>
+  </ul>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(jugadores)}">
+    No hay jugadores registrados. <a class="alert-link" th:href="@{/jugadores/nuevo}">Registrar jugador</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <div class="alert alert-warning" th:if="${#lists.isEmpty(competiciones)}">
+    No hay competiciones registradas. <a class="alert-link" th:href="@{/competiciones/nuevo}">Registrar competición</a> antes de continuar: este registro no puede existir sin ese dato.
+  </div>
+  <section class="panel">
+    <h2 class="mb-4" th:text="${#strings.isEmpty(accion.id)} ? 'Nueva acción' : 'Editar acción'">Nueva acción</h2>
+    <form th:action="@{/acciones/guardar}" th:object="${accion}" method="post" class="row g-3">
+      <input type="hidden" th:field="*{id}">
+      <div class="col-md-6">
+        <label class="form-label" for="tipo">Tipo *</label>
+        <select class="form-select" th:field="*{tipo}" required><option value="">Selecciona una opción</option><option value="GOL">GOL</option><option value="ASISTENCIA">ASISTENCIA</option><option value="TARJETA AMARILLA">TARJETA AMARILLA</option><option value="TARJETA ROJA">TARJETA ROJA</option><option value="FALTA">FALTA</option><option value="CAMBIO">CAMBIO</option></select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="minuto">Minuto *</label>
+        <input type="number" class="form-control" th:field="*{minuto}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="descripcion">Descripción</label>
+        <input type="text" class="form-control" th:field="*{descripcion}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="jugadorId">Jugador *</label>
+        <select class="form-select" id="jugadorId" name="jugadorId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${jugadores}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${accion.jugador != null and accion.jugador.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="competicionId">Competición *</label>
+        <select class="form-select" id="competicionId" name="competicionId" required>
+          <option value="">Selecciona una opción</option>
+          <option th:each="op : ${competiciones}" th:value="${op.id}" th:text="${op.nombre}"
+                  th:selected="${accion.competicion != null and accion.competicion.id == op.id}"></option>
+        </select>
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-turf" type="submit" th:disabled="${#lists.isEmpty(jugadores) or #lists.isEmpty(competiciones)}"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a class="btn btn-outline-secondary" th:href="@{/acciones}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

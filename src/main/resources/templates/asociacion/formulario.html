@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Asociaciones')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('asociaciones')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Asociaciones</h1>
+    <p class="fs-5 mb-0">Federaciones que agrupan clubes y organizan competiciones.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/asociaciones}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link active" th:href="@{/asociaciones/nuevo}">Nueva asociación</a></li>
+  </ul>
+  <section class="panel">
+    <h2 class="mb-4" th:text="${#strings.isEmpty(asociacion.id)} ? 'Nueva asociación' : 'Editar asociación'">Nueva asociación</h2>
+    <form th:action="@{/asociaciones/guardar}" th:object="${asociacion}" method="post" class="row g-3">
+      <input type="hidden" th:field="*{id}">
+      <div class="col-md-6">
+        <label class="form-label" for="nombre">Nombre *</label>
+        <input type="text" class="form-control" th:field="*{nombre}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="pais">País *</label>
+        <input type="text" class="form-control" th:field="*{pais}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="confederacion">Confederación *</label>
+        <select class="form-select" th:field="*{confederacion}" required><option value="">Selecciona una opción</option><option value="CONMEBOL">CONMEBOL</option><option value="UEFA">UEFA</option><option value="CONCACAF">CONCACAF</option><option value="CAF">CAF</option><option value="AFC">AFC</option><option value="OFC">OFC</option></select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="anioFundacion">Año de fundación</label>
+        <input type="number" class="form-control" th:field="*{anioFundacion}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="presidente">Presidente</label>
+        <input type="text" class="form-control" th:field="*{presidente}">
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-turf" type="submit"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a class="btn btn-outline-secondary" th:href="@{/asociaciones}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>

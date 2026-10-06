@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: cabecera('Clubes')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: menu('clubes')}"></nav>
+<header class="pitch py-5">
+  <div class="container py-lg-3">
+    <h1 class="mb-2">Clubes</h1>
+    <p class="fs-5 mb-0">Equipos con su asociación, su estadio y su entrenador.</p>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div th:replace="~{fragments/layout :: avisos}"></div>
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item"><a class="nav-link active" th:href="@{/clubes}">Listado</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/clubes/nuevo}">Nuevo club</a></li>
+  </ul>
+  <div class="panel p-0 table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead><tr><th>Nombre</th><th>Ciudad</th><th>Año de fundación</th><th>Asociación</th><th>Estadio</th><th>Entrenador</th><th>Jugadores</th><th>Competiciones</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="fila : ${clubes}">
+          <td class="fw-semibold" th:text="${fila.nombre}"></td>
+          <td th:text="${fila.ciudad}"></td>
+          <td th:text="${fila.anioFundacion}"></td>
+          <td th:text="${fila.asociacion != null ? fila.asociacion.nombre : '—'}"></td>
+          <td th:text="${fila.estadio != null ? fila.estadio.nombre : '—'}"></td>
+          <td th:text="${fila.entrenador != null ? fila.entrenador.nombre : '—'}"></td>
+          <td><span class="badge badge-team" th:text="${totalJugadores.get(fila.id) ?: 0}"></span></td>
+          <td><span class="badge badge-team" th:text="${totalCompeticiones.get(fila.id) ?: 0}"></span></td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-secondary" th:href="@{/clubes/editar/{id}(id=${fila.id})}"><i class="bi bi-pencil"></i> Editar</a>
+            <form class="d-inline" th:action="@{/clubes/eliminar/{id}(id=${fila.id})}" method="post" onsubmit="return confirm('¿Eliminar este registro?')">
+              <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i> Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(clubes)}">
+          <td colspan="9" class="text-center text-secondary py-4">Aún no hay registros. <a th:href="@{/clubes/nuevo}">Crea el primero</a>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: pie}"></footer>
+</body>
+</html>
